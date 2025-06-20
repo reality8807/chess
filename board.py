@@ -7,7 +7,7 @@ from pieces.pawn import Pawn
 
 
 class Board:
-    def __init__(self):
+    def __init__(self) -> None:
         self.array_board = [
             [Rook("black"), Knight("black"), Bishop("black"), Queen("black"), King("black"), Bishop("black"), Knight("black"), Rook("black")],
             [Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black"), Pawn("black")],
@@ -19,7 +19,7 @@ class Board:
             [Rook("white"), Knight("white"), Bishop("white"), Queen("white"), King("white"), Bishop("white"), Knight("white"), Rook("white")]
         ]
 
-    def print_board(self):
+    def print_board(self) -> None:
         num = 8
         border = '─'
 

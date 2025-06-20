@@ -1,7 +1,8 @@
 from board import Board
 
+
 class Game:
-    def __init__(self):
+    def __init__(self) -> None:
         self.board = Board()
         self.board.print_board()
 
@@ -13,7 +14,7 @@ class Game:
         self.turn = "white"
         self.choosable_pieces = self.white_pieces
 
-    def logic(self):
+    def logic(self) -> None:
         while True:
             # Initial Input
             self.get_initial_input()
@@ -44,7 +45,7 @@ class Game:
             self.board.print_board()
             self.switch_player()
 
-    def get_initial_input(self):
+    def get_initial_input(self) -> None:
         initial_move = input("Enter Initial Move: ")
         if initial_move == "exit":
             exit()
@@ -55,13 +56,13 @@ class Game:
             self.initial_row = 8-int(initial_move[1])
             self.initial_col = self.letter_conversion.get(initial_move[0])
 
-            self.initial_selected_pos = (self.initial_row, self.initial_col) 
+            self.initial_selected_pos = (self.initial_row, self.initial_col)
             self.initial_selected_piece = self.board.array_board[self.initial_row][self.initial_col]
         except:
             print("\nInvalid Move. Enter the position of the piece you want to move (e.g., e2)\n")
             self.get_initial_input()
 
-    def get_final_input(self):
+    def get_final_input(self) -> None:
         final_move = input("Enter Final Move: ")
         if final_move == "exit":
             exit()
@@ -78,7 +79,7 @@ class Game:
             print("\nInvalid Move. Enter proper destination square (e.g., e4)\n")
             self.get_final_input()
 
-    def switch_player(self):
+    def switch_player(self) -> None:
         if self.turn == "white":
             self.turn = "black"
             self.choosable_pieces = self.black_pieces
@@ -86,7 +87,7 @@ class Game:
             self.turn = "white"
             self.choosable_pieces = self.white_pieces
 
-    def is_check(self):
+    def is_check(self) -> bool:
         board = self.board.array_board
         temp_final_piece = board[self.final_row][self.final_col]
 
@@ -149,7 +150,7 @@ class Game:
                             return False
         return False
 
-    def is_checkmate(self, king_pos_row, king_pos_col):
+    def is_checkmate(self, king_pos_row: int, king_pos_col: int) -> bool:
         board = self.board.array_board
         checkmate = True
 

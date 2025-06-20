@@ -1,5 +1,5 @@
 class Rook():
-    def __init__(self, color):
+    def __init__(self, color: str) -> None:
         self.color = color
         self.white_symbol = "♜"
         self.black_symbol = "♖"
@@ -9,7 +9,7 @@ class Rook():
         else:
             self.symbol = self.black_symbol
 
-    def get_legal_moves(self, row, col, board):
+    def get_legal_moves(self, row: int, col: int, board) -> None:
         self.legal_moves = []
 
         # Left
