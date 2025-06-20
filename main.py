@@ -152,7 +152,9 @@ class Game:
                 if self.board.array_board[r][c].symbol not in self.choosable_pieces:
                     continue
             # Temporary move
-            self.board.array_board[king_pos_row][king_pos_col], self.board.array_board[r][c] = self.board.array_board[r][c], self.board.array_board[king_pos_row][king_pos_col]  # Temporary move
+            captured = self.board.array_board[r][c]
+            self.board.array_board[r][c] = self.board.array_board[king_pos_row][king_pos_col]
+            self.board.array_board[king_pos_row][king_pos_col] = None
             not_valid_move = False
 
             # Check if king can avoid check
@@ -168,7 +170,8 @@ class Game:
                     break
 
             # Undo the temporary move
-            self.board.array_board[king_pos_row][king_pos_col], self.board.array_board[r][c] = self.board.array_board[r][c], self.board.array_board[king_pos_row][king_pos_col]  # Swap back temporary move
+            self.board.array_board[king_pos_row][king_pos_col] = self.board.array_board[r][c]
+            self.board.array_board[r][c] = captured
             if not not_valid_move:
                 checkmate = False
                 break
@@ -184,8 +187,9 @@ class Game:
                             self.board.array_board[row][col].get_legal_moves(row, col, self.board)
                             for r, c in self.board.array_board[row][col].legal_moves:
                                 if self.board.array_board[r][c] is not None:
-                                    if self.board.array_board[r][c] not in self.choosable_pieces:
+                                    if self.board.array_board[r][c].symbol not in self.choosable_pieces:
                                         continue
+
                                 # Temporary move
                                 captured = self.board.array_board[r][c]
                                 self.board.array_board[r][c] = self.board.array_board[row][col]
