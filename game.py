@@ -36,11 +36,18 @@ class Game:
             self.initial_selected_piece.get_legal_moves(self.initial_row, self.initial_col, self.board)
 
             if self.final_selected_pos not in self.initial_selected_piece.legal_moves:
+                if self.initial_selected_piece.symbol in ["♚", "♔"]:
+                    if self.initial_selected_piece.first_time:
+                        self.castle()
+                        continue
                 print("\nIllegal move, try again!\n")
                 continue
 
-            if self.is_check():
+            if self.is_self_check():
                 continue
+
+            if self.initial_selected_piece.symbol in ["♜", "♖", "♚", "♔"]:
+                self.initial_selected_piece.first_time = False
 
             self.board.print_board()
             self.switch_player()
@@ -87,7 +94,7 @@ class Game:
             self.turn = "white"
             self.choosable_pieces = self.white_pieces
 
-    def is_check(self) -> bool:
+    def is_self_check(self) -> bool:
         board = self.board.array_board
         temp_final_piece = board[self.final_row][self.final_col]
 
@@ -120,6 +127,11 @@ class Game:
                             board[self.initial_row][self.initial_col] = self.initial_selected_piece
                             board[self.final_row][self.final_col] = temp_final_piece
                             return True
+
+        return self.is_check()
+
+    def is_check(self) -> bool:
+        board = self.board.array_board
 
         # Find opponent king's position
         for row in range(0, 8):
@@ -229,3 +241,124 @@ class Game:
                 if not checkmate:
                     break
         return checkmate
+
+    def castle(self):
+        if self.initial_selected_piece.color == "white":
+            if self.final_selected_pos == (7, 6):
+                if self.board.array_board[7][7].first_time and self.board.array_board[7][6] is None and self.board.array_board[7][5] is None:
+                    invalid_castle = False
+                    for row in range(0, 8):
+                        for col in range(0, 8):
+                            if self.board.array_board[row][col] is not None:
+                                if self.board.array_board[row][col].color == "black":
+                                    self.board.array_board[row][col].get_legal_moves(row, col, self.board)
+                                    if (7, 4) in self.board.array_board[row][col].legal_moves or (7, 5) in self.board.array_board[row][col].legal_moves or (7, 6) in self.board.array_board[row][col].legal_moves:
+                                        invalid_castle = True
+                                        break
+                        if invalid_castle:
+                            break
+
+                    if not invalid_castle:
+                        self.board.array_board[7][4].first_time = False
+                        self.board.array_board[7][6] = self.initial_selected_piece
+                        self.board.array_board[7][4] = None
+                        self.board.array_board[7][5] = self.board.array_board[7][7]
+                        self.board.array_board[7][7] = None
+                        self.is_check()
+                        self.board.print_board()
+                        self.switch_player()
+                    else:
+                        print("\nIllegal move, try again!\n")
+                else:
+                    print("\nIllegal move, try again!\n")
+
+            elif self.final_selected_pos == (7, 2):
+                if self.board.array_board[7][0].first_time and self.board.array_board[7][1] is None and self.board.array_board[7][2] is None and self.board.array_board[7][3] is None:
+                    invalid_castle = False
+                    for row in range(0, 8):
+                        for col in range(0, 8):
+                            if self.board.array_board[row][col] is not None:
+                                if self.board.array_board[row][col].color == "black":
+                                    self.board.array_board[row][col].get_legal_moves(row, col, self.board)
+                                    if (7, 4) in self.board.array_board[row][col].legal_moves or (7, 3) in self.board.array_board[row][col].legal_moves or (7, 2) in self.board.array_board[row][col].legal_moves:
+                                        invalid_castle = True
+                                        break
+                        if invalid_castle:
+                            break
+
+                    if not invalid_castle:
+                        self.board.array_board[7][4].first_time = False
+                        self.board.array_board[7][2] = self.initial_selected_piece
+                        self.board.array_board[7][4] = None
+                        self.board.array_board[7][3] = self.board.array_board[7][0]
+                        self.board.array_board[7][0] = None
+                        self.is_check()
+                        self.board.print_board()
+                        self.switch_player()
+                    else:
+                        print("\nIllegal move, try again!\n")
+                else:
+                    print("\nIllegal move, try again!\n")
+
+            else:
+                print("\nIllegal move, try again!\n")
+
+        else:
+            if self.final_selected_pos == (0, 6):
+                if self.board.array_board[0][7].first_time and self.board.array_board[0][6] is None and self.board.array_board[0][5] is None:
+                    invalid_castle = False
+                    for row in range(0, 8):
+                        for col in range(0, 8):
+                            if self.board.array_board[row][col] is not None:
+                                if self.board.array_board[row][col].color == "white":
+                                    self.board.array_board[row][col].get_legal_moves(row, col, self.board)
+                                    if (0, 4) in self.board.array_board[row][col].legal_moves or (0, 5) in self.board.array_board[row][col].legal_moves or (0, 6) in self.board.array_board[row][col].legal_moves:
+                                        invalid_castle = True
+                                        break
+                        if invalid_castle:
+                            break
+
+                    if not invalid_castle:
+                        self.board.array_board[0][4].first_time = False
+                        self.board.array_board[0][6] = self.initial_selected_piece
+                        self.board.array_board[0][4] = None
+                        self.board.array_board[0][5] = self.board.array_board[0][7]
+                        self.board.array_board[0][7] = None
+                        self.is_check()
+                        self.board.print_board()
+                        self.switch_player()
+                    else:
+                        print("\nIllegal move, try again!\n")
+                else:
+                    print("\nIllegal move, try again!\n")
+
+            elif self.final_selected_pos == (0, 2):
+                if self.board.array_board[0][0].first_time and self.board.array_board[0][1] is None and self.board.array_board[0][2] is None and self.board.array_board[0][3] is None:
+                    invalid_castle = False
+                    for row in range(0, 8):
+                        for col in range(0, 8):
+                            if self.board.array_board[row][col] is not None:
+                                if self.board.array_board[row][col].color == "black":
+                                    self.board.array_board[row][col].get_legal_moves(row, col, self.board)
+                                    if (0, 4) in self.board.array_board[row][col].legal_moves or (0, 3) in self.board.array_board[row][col].legal_moves or (0, 2) in self.board.array_board[row][col].legal_moves:
+                                        invalid_castle = True
+                                        break
+                        if invalid_castle:
+                            break
+
+                    if not invalid_castle:
+                        self.board.array_board[0][4].first_time = False
+                        self.board.array_board[0][2] = self.initial_selected_piece
+                        self.board.array_board[0][4] = None
+                        self.board.array_board[0][3] = self.board.array_board[0][0]
+                        self.board.array_board[0][0] = None
+                        self.is_check()
+                        self.board.print_board()
+                        self.switch_player()
+                    else:
+                        print("\nIllegal move, try again!\n")
+                else:
+                    print("\nIllegal move, try again!\n")
+
+            else:
+                print("\nIllegal move, try again!\n")

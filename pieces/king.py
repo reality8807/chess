@@ -1,5 +1,6 @@
 class King():
     def __init__(self, color: str) -> None:
+        self.first_time = True
         self.color = color
         self.white_symbol = "♚"
         self.black_symbol = "♔"
