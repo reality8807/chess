@@ -19,8 +19,13 @@ class Board:
             [Rook("white"), Knight("white"), Bishop("white"), Queen("white"), King("white"), Bishop("white"), Knight("white"), Rook("white")]
         ]
 
-    def print_board(self) -> None:
-        num = 8
+    def print_board(self, board_pos) -> None:
+        print('\n    a    b    c    d    e    f    g    h')
+
+        if board_pos == 1:
+            num = 8
+        else:
+            num = 1
         border = '─'
 
         # Top Border
@@ -28,7 +33,7 @@ class Board:
         print(border * 39, end='')
         print('┐')
 
-        for i, row in enumerate(self.array_board):
+        for i, row in enumerate(self.array_board[::board_pos]):
             print(f'{num} │ ', end='')
 
             # Vertical Lines
@@ -37,15 +42,17 @@ class Board:
                     print(" ", end='  │ ')
                 else:
                     print(column.symbol, end='  │ ')
+
+            print(num, end="")
             print()
 
-            # Horizontal Lines
+            # Horizontal Lines              
             if i != len(self.array_board) - 1:
                 print('  ├', end='')
                 print(border * 39, end='')
                 print('┤')
 
-            num -= 1
+            num -= board_pos
 
         # Bottom Border
         print('  └', end='')
@@ -53,4 +60,4 @@ class Board:
         print('┘')
 
         # Letters
-        print('    a    b    c    d    e    f    g    h')
+        print('    a    b    c    d    e    f    g    h\n')

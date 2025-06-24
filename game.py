@@ -4,15 +4,16 @@ from board import Board
 class Game:
     def __init__(self) -> None:
         self.board = Board()
-        self.board.print_board()
-
         self.letter_conversion = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 
         self.white_pieces = ["♟︎", "♜", "♞", "♝", "♛", "♚"]
         self.black_pieces = ["♙", "♖", "♘", "♗", "♕", "♔"]
 
         self.turn = "white"
+        self.board_pos = 1
         self.choosable_pieces = self.white_pieces
+
+        self.board.print_board(self.board_pos)
 
     def logic(self) -> None:
         while True:
@@ -49,8 +50,8 @@ class Game:
             if self.initial_selected_piece.symbol in ["♜", "♖", "♚", "♔"]:
                 self.initial_selected_piece.first_time = False
 
-            self.board.print_board()
             self.switch_player()
+            self.board.print_board(self.board_pos)
 
     def get_initial_input(self) -> None:
         initial_move = input("Enter Initial Move: ")
@@ -89,9 +90,11 @@ class Game:
     def switch_player(self) -> None:
         if self.turn == "white":
             self.turn = "black"
+            self.board_pos = -1
             self.choosable_pieces = self.black_pieces
         else:
             self.turn = "white"
+            self.board_pos = 1
             self.choosable_pieces = self.white_pieces
 
     def is_self_check(self) -> bool:
@@ -122,7 +125,7 @@ class Game:
                     if board[row][piece].symbol not in self.choosable_pieces:
                         board[row][piece].get_legal_moves(row, piece, self.board)
                         if king_pos in board[row][piece].legal_moves:
-                            print("\nYou cannot play this move, your king is still in check!\n")
+                            print("\nIllegal move, try again!\n")
                             # Undo the move made by user
                             board[self.initial_row][self.initial_col] = self.initial_selected_piece
                             board[self.final_row][self.final_col] = temp_final_piece
@@ -156,7 +159,7 @@ class Game:
                             if self.is_checkmate(king_pos[0], king_pos[1]):
                                 print("\nCheckmate!")
                                 print(f"{self.turn.capitalize()} won the game!!")
-                                self.board.print_board()
+                                self.board.print_board(self.board_pos)
                                 exit()
                             print("\nCHECK!\n")
                             return False
@@ -265,8 +268,8 @@ class Game:
                         self.board.array_board[7][5] = self.board.array_board[7][7]
                         self.board.array_board[7][7] = None
                         self.is_check()
-                        self.board.print_board()
                         self.switch_player()
+                        self.board.print_board(self.board_pos)
                     else:
                         print("\nIllegal move, try again!\n")
                 else:
@@ -293,8 +296,8 @@ class Game:
                         self.board.array_board[7][3] = self.board.array_board[7][0]
                         self.board.array_board[7][0] = None
                         self.is_check()
-                        self.board.print_board()
                         self.switch_player()
+                        self.board.print_board(self.board_pos)
                     else:
                         print("\nIllegal move, try again!\n")
                 else:
@@ -325,8 +328,8 @@ class Game:
                         self.board.array_board[0][5] = self.board.array_board[0][7]
                         self.board.array_board[0][7] = None
                         self.is_check()
-                        self.board.print_board()
                         self.switch_player()
+                        self.board.print_board(self.board_pos)
                     else:
                         print("\nIllegal move, try again!\n")
                 else:
@@ -353,8 +356,8 @@ class Game:
                         self.board.array_board[0][3] = self.board.array_board[0][0]
                         self.board.array_board[0][0] = None
                         self.is_check()
-                        self.board.print_board()
                         self.switch_player()
+                        self.board.print_board(self.board_pos)
                     else:
                         print("\nIllegal move, try again!\n")
                 else:
