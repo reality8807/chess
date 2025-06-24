@@ -32,7 +32,6 @@ Type ```exit``` at any time to quit the game.
 No external packages are required. This project uses only standard Python libraries.
 
 ## Future Improvements
-- Castling support
 - En passant
 - Pawn promotion
 - GUI interface using Tkinter
