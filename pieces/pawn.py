@@ -14,7 +14,7 @@ class Pawn():
     def get_legal_moves(self, row: int, col: int, board) -> None:
         self.legal_moves = []
         if self.color == "white":
-            if row == 6 and board.array_board[4][col] is None and board.array_board[3][col] is None:
+            if row == 6 and board.array_board[4][col] is None and board.array_board[5][col] is None:
                 self.legal_moves.append((4, col))
             if row != 0:
                 if board.array_board[row-1][col] is None:
